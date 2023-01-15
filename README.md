@@ -33,3 +33,11 @@ jupyter notebook  // 주피터 노트북 실행
 ```
 <img width="1212" alt="image" src="https://user-images.githubusercontent.com/89503136/212532283-56ed5339-18ca-4e3d-8378-d75a992d6812.png">
 
+## 데이터셋 가져오기
+1. clone 받은 파일 안에 data 폴더 만들기
+2. [데이터셋](https://console.cloud.google.com/storage/browser/quickdraw_dataset/full/numpy_bitmap;tab=objects?prefix=&forceOnObjectsSortingFiltering=false)에서 .npy 파일을 저장해서 /data 폴더 안에 넣기
+
+## 실행
+1. readDateset.py 실행 (원하는 오브젝트에 대한 npy 파일을 읽음)
+2. trainModel.py 실행 (학습 및 모델 아키텍처와 모델 가중치를 h5 파일 형식으로 저장)
+3. imagePredicy.py 실행
