@@ -20,6 +20,7 @@ pip install opencv-python==4.5.5.4
 pip install keras
 pip install pandas
 pip install sklearn
+pip install scikit-learn
 pip install scipy
 ```
 
