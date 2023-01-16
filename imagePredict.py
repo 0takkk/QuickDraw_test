@@ -11,6 +11,8 @@ import os
 
 from PIL import ImageTk,ImageGrab,Image
 
+ans = ["사과", "도끼", "바나나", "야구배트", "곰", "꿀벌", "책", "브로콜리", "시계", "구름", "컵"]
+
 width = 400
 height = 400
 center = height//2
@@ -32,7 +34,7 @@ def predict():
     
     model = load_model('QuickDraw.h5')
     file = 'saveImage\\image.png'
-    emojis = get_QD_emojis()
+#     emojis = get_QD_emojis()
 
 
     if os.path.isfile(file):
@@ -57,19 +59,24 @@ def predict():
                 pred_probab, pred_class = keras_predict(model, digit)
                 #여기서 pred_class 는 각이미지의 번호를 나타내는듯
                 print("hey!",pred_probab," and ", pred_class)
-                result_path1 = 'qd_emo\\'
-                result_path2 = '.png'
-                result = result_path1+str(pred_class)+result_path2
-                print(result)
-                img = cv2.imread(result, cv2.IMREAD_COLOR)
-                resultImage = ImageTk.PhotoImage(file=result)
-                label.configure(image=resultImage)
-                label.image = resultImage # keep a reference!
+#                 result_path1 = 'qd_emo\\'
+#                 result_path2 = '.png'
+#                 result = result_path1+str(pred_class)+result_path2
+#                 print(result)
+#                 img = cv2.imread(result, cv2.IMREAD_COLOR)
+#                 resultImage = ImageTk.PhotoImage(file=result)
+#                 label.configure(image=resultImage)
+#                 label.image = resultImage # keep a reference!
+                print("ans = ", ans[pred_class])
+                print("")
 #                 print("DONE!")
                 #2020-08-18 그림 인식 시 어떤 그림인지 텍스트로 표현
                 if pred_class==0:
-                    text.set("This is apple!")
+                    text.set("사과")
                 elif pred_class==1:
+                    text.set("도끼")
+                    
+                elif pred_class==3:
                     text.set("This is Bat!")
                 
 
@@ -80,39 +87,39 @@ def predict():
     else :
         print("Nothing")
         
-def voice():
-    model = load_model('QuickDraw.h5')
-    file = 'saveImage\\image.png'
-    emojis = get_QD_emojis()
+# def voice():
+#     model = load_model('QuickDraw.h5')
+#     file = 'saveImage\\image.png'
+#     emojis = get_QD_emojis()
 
 
-    if os.path.isfile(file):
-        print("Yes. it is a file")
-        src = cv2.imread(file, cv2.IMREAD_COLOR)
-        dst = cv2.bitwise_not(src)
+#     if os.path.isfile(file):
+#         print("Yes. it is a file")
+#         src = cv2.imread(file, cv2.IMREAD_COLOR)
+#         dst = cv2.bitwise_not(src)
 
-        blackboard_gray = cv2.cvtColor(dst, cv2.COLOR_BGR2GRAY)
-        blur1 = cv2.medianBlur(blackboard_gray, 1)
-        blur1 = cv2.GaussianBlur(blur1, (5, 5), 0)
+#         blackboard_gray = cv2.cvtColor(dst, cv2.COLOR_BGR2GRAY)
+#         blur1 = cv2.medianBlur(blackboard_gray, 1)
+#         blur1 = cv2.GaussianBlur(blur1, (5, 5), 0)
 
-        thresh1 = cv2.threshold(blur1, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+#         thresh1 = cv2.threshold(blur1, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 
-        blackboard_cnts= cv2.findContours(thresh1.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)[0]
+#         blackboard_cnts= cv2.findContours(thresh1.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)[0]
 
-        if len(blackboard_cnts) >= 1:
-            cnt = sorted(blackboard_cnts, key=cv2.contourArea, reverse=True)[0]
-            print(cv2.contourArea(cnt))
-            if cv2.contourArea(cnt) > 2000:
-                x, y, w, h = cv2.boundingRect(cnt)
-                digit = blackboard_gray[y:y + h, x:x + w]
-                pred_probab, pred_class = keras_predict(model, digit)
+#         if len(blackboard_cnts) >= 1:
+#             cnt = sorted(blackboard_cnts, key=cv2.contourArea, reverse=True)[0]
+#             print(cv2.contourArea(cnt))
+#             if cv2.contourArea(cnt) > 2000:
+#                 x, y, w, h = cv2.boundingRect(cnt)
+#                 digit = blackboard_gray[y:y + h, x:x + w]
+#                 pred_probab, pred_class = keras_predict(model, digit)
                 
-    elif os.path.isdir(file):
-        print("Yes. it is a directory")
-    elif os.path.exists(file):
-        print("Something exist")
-    else :
-        print("Nothing")
+#     elif os.path.isdir(file):
+#         print("Yes. it is a directory")
+#     elif os.path.exists(file):
+#         print("Something exist")
+#     else :
+#         print("Nothing")
 
 def paint(event):
     # python_green = "#476042"
@@ -150,14 +157,14 @@ def keras_process_image(img):
     img = np.reshape(img, (-1, image_x, image_y, 1))
     return img
 
-def get_QD_emojis():
-    print("function get_QD_emojis start")
-    emojis_folder = "qd_emo/"
-    emojis = []
-    for emoji in range(len(os.listdir("qd_emo/"))):
-        print(emoji)
-        emojis.append(cv2.imread(emojis_folder + str(emoji) + '.png', -1))
-    return emojis
+# def get_QD_emojis():
+#     print("function get_QD_emojis start")
+#     emojis_folder = "qd_emo/"
+#     emojis = []
+#     for emoji in range(len(os.listdir("qd_emo/"))):
+#         print(emoji)
+#         emojis.append(cv2.imread(emojis_folder + str(emoji) + '.png', -1))
+#     return emojis
 
 
 root = Tk()
@@ -184,9 +191,9 @@ text.set("그림을 그리면 알아맞출게요!\n")
 textlabel = Label(root, textvariable=text)
 textlabel.place(x=400, y=0, width=400, height=30)
 
-predImage = ImageTk.PhotoImage(file="saveImage\\smile.jpg")
-label=Label(root,image=predImage)
-label.place(x=400, y=20, width=400, height=360)
+# predImage = ImageTk.PhotoImage(file="saveImage\\smile.jpg")
+# label=Label(root,image=predImage)
+# label.place(x=400, y=20, width=400, height=360)
 
 
 button=Button(text="clear",command=clear)
@@ -195,8 +202,8 @@ button.place(x=0, y=400, width=100, height=20)
 button=Button(text="predict",command=predict)
 button.place(x=300, y=400, width=100, height=20)
 
-button=Button(text="voice",command=voice)
-button.place(x=550, y=350, width=100, height=20)
+# button=Button(text="voice",command=voice)
+# button.place(x=550, y=350, width=100, height=20)
 
 
 root.mainloop()
