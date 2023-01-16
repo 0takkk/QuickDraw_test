@@ -16,7 +16,7 @@ conda activate tftest
 ```
 pip install tensorflow
 pip install matplotlib
-pip install opencv-python==4.5.5.4
+pip install opencv-python==4.5.5.64
 pip install keras
 pip install pandas
 pip install sklearn
