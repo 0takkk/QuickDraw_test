@@ -3,7 +3,7 @@ anaconda 설치
 
 ## 가상환경 생성하기
 ```
-conda create -n 가상환경이름 pyhon=버전  // 설치
+conda create -n 가상환경이름 python=버전  // 설치
 conda env list  // 가상환경 목록
 (conda) activate 가상환경이름  // 실행
 (conda) deactive 가상환경이름  // 종료 
